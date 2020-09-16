@@ -4,10 +4,12 @@ from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.db import models
 from django.utils.module_loading import import_string
-from django.utils.functional import curry
 from django.utils.translation import ugettext_lazy as _
-from django.utils import six
-from django.utils.encoding import python_2_unicode_compatible, force_text
+from django.utils.encoding import force_text
+
+from functools import partialmethod
+
+import six
 
 SELF, BLANK = ('_self', '_blank')
 TARGET_CHOICES = (
@@ -48,7 +50,7 @@ def do_anylink_extension_setup(cls, **kwargs):
     link_type.choices.sort(key=lambda item: item[0])
 
     # Manually add display function.
-    cls.get_link_type_display = curry(cls._get_FIELD_display, field=link_type)
+    cls.get_link_type_display = partialmethod(cls._get_FIELD_display, field=link_type)
 
     # Configure django modeladmin
     has_admin = apps.is_installed('django.contrib.admin')
@@ -62,7 +64,7 @@ def do_anylink_extension_setup(cls, **kwargs):
                 extension.configure_modeladmin(modeladmin)
 
 
-@python_2_unicode_compatible
+@six.python_2_unicode_compatible
 class AnyLink(models.Model):
     text = models.CharField(_('text'), max_length=150, blank=True)
     title = models.CharField(_('title'), max_length=150, blank=True)

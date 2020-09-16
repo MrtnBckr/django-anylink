@@ -3,10 +3,11 @@ from django.apps import apps
 from django.core.exceptions import ImproperlyConfigured, ValidationError
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.utils.encoding import python_2_unicode_compatible
+
+import six
 
 
-@python_2_unicode_compatible
+@six.python_2_unicode_compatible
 class BaseLink(object):
     name = None
     verbose_name = None
