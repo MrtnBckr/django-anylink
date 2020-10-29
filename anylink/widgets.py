@@ -44,11 +44,11 @@ class AnyLinkAddOrChangeWidget(forms.TextInput):
         self.db = using
         super(AnyLinkAddOrChangeWidget, self).__init__(attrs)
 
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
         if attrs is None:
             attrs = {}
 
-        output = [super(AnyLinkAddOrChangeWidget, self).render(name, value, attrs)]
+        output = [super(AnyLinkAddOrChangeWidget, self).render(name, value, attrs, renderer)]
         output.append(self.label_for_value(name, value))
 
         if self.remote_field.model in self.admin_site._registry:
